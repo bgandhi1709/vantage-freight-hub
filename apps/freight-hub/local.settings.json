@@ -1,0 +1,22 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "ServiceBusConnection": "",
+    "ShipmentQueueName": "shipment-commands",
+    "CallbackTopicName": "forwarder-callbacks",
+    "AccountSubscriptionName": "account-callbacks",
+    "BookingSubscriptionName": "booking-callbacks",
+    "PickupSubscriptionName": "pickup-callbacks",
+    "DeliverySubscriptionName": "delivery-callbacks",
+
+    "FreightHub__StorageConnectionString": "UseDevelopmentStorage=true",
+    "FreightHub__SnapshotContainerName": "shipments",
+    "FreightHub__LifecycleTableName": "shipmentlifecycle",
+    "FreightHub__ForwarderBaseUrl": "http://localhost:5199",
+    "FreightHub__ForwarderApiToken": "local-development-forwarder-token",
+    "FreightHub__DevEndpointApiKey": "local-development-dev-endpoint-key"
+  }
+}

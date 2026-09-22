@@ -1,0 +1,12 @@
+[*.cs]
+
+# Test names follow Method_Scenario_Expected so the failure contract reads off a test run.
+dotnet_diagnostic.CA1707.severity = none
+
+# xUnit collection definitions are named after the collection they define.
+dotnet_diagnostic.CA1711.severity = none
+
+# xUnit1051 asks every awaited call to thread TestContext.Current.CancellationToken. These tests
+# are short and the Azurite fixture tears its process down regardless, so the token would add
+# noise to every line without changing what happens on cancellation.
+dotnet_diagnostic.xUnit1051.severity = none

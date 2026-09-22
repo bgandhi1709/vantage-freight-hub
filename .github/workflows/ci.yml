@@ -1,0 +1,69 @@
+name: ci
+
+# Pull requests are validated, not just main: a build that only runs after merge tells you about a
+# break when it is already everyone's problem.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
+      # The repository tests run against a real storage emulator rather than a fake, so CI has to
+      # provide one. Without this step they would be the tests that only ever pass locally.
+      - name: Install Azurite
+        run: npm install -g azurite@3
+
+      - name: Build
+        run: dotnet build VantageFreightHub.slnx -c Release
+
+      - name: Test
+        run: dotnet test --solution VantageFreightHub.slnx -c Release --no-build
+
+  infrastructure:
+    name: Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Every parameter file is compiled too, not just the template: a parameter file that no
+      # longer matches the template is the failure that only shows up at deploy time.
+      - name: Compile Bicep
+        run: |
+          az bicep install
+          az bicep build --file infra/functions/main.bicep --stdout > /dev/null
+          for file in infra/functions/params/*.bicepparam; do
+            az bicep build-params --file "$file" --stdout > /dev/null
+          done
+
+  security:
+    name: Dependency and filesystem scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '1'

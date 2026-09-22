@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/apps/" />
+  <Folder Name="/apps/freight-hub-tests/">
+    <Project Path="apps/freight-hub-tests/Vantage.Freight.Hub.Tests.csproj" />
+  </Folder>
+  <Folder Name="/apps/freight-hub/">
+    <Project Path="apps/freight-hub/Vantage.Freight.Hub.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,26 @@
+<Project>
+
+  <!--
+    Build output is redirected to dist/<project-relative-path>/ so the repository tree stays
+    free of per-project bin/obj folders and a single .gitignore entry covers every artifact.
+  -->
+  <PropertyGroup>
+    <RepositoryRoot>$([MSBuild]::EnsureTrailingSlash('$(MSBuildThisFileDirectory)'))</RepositoryRoot>
+    <ProjectRelativePath>$([MSBuild]::MakeRelative('$(RepositoryRoot)', '$(MSBuildProjectDirectory)'))</ProjectRelativePath>
+    <BaseOutputPath>$(RepositoryRoot)dist/$(ProjectRelativePath)/bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(RepositoryRoot)dist/intermediates/$(ProjectRelativePath)/obj/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>
